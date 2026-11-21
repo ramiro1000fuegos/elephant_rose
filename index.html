@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#371226">
-  <meta name="description" content="L’Éléphant rose, le jeu des mots et des lettres interdites. Jeu hors ligne.">
+  <meta name="description" content="L’Éléphant rose, un jeu de mots avec des lettres interdites. Jeu hors ligne.">
   <title>L’Éléphant rose — Ne pense pas à un…</title>
   <style>
     :root {
@@ -410,7 +410,7 @@
         <button class="secondary" id="rules-button" type="button">Règles du jeu</button>
         <button class="primary" id="play-button" type="button">Commencer</button>
       </div>
-      <p class="landing-note">Un jeu de mots interdits · Sans connexion</p>
+      <p class="landing-note">Un jeu de mots avec des lettres interdites · Sans connexion</p>
     </div>
   </section>
   <section id="rules-panel" class="rules-panel" aria-labelledby="rules-title" hidden>
@@ -664,6 +664,9 @@
         // No hay límite de espera: el reloj todavía no está en marcha.
         return;
       }
+      // X2 : les lettres deviennent rouges PENDANT l’annonce, donc elles sont
+      // déjà rouges à l’instant précis où l’écran X2 disparaît.
+      pintarReloj();
       // Solo X2 conserva su aviso automático de 1,2 segundos.
       const duracion = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 450 : 1200;
       powerOverlay.style.setProperty('--power-time', `${duracion}ms`);
@@ -931,6 +934,12 @@
         detenerReloj();
         const accion = turnos.pop();
         if (accion.grupoMostrado) reveladas.pop();
+        // Au-delà de la toute première carte, « Retour » ramène vraiment à
+        // l’accueil (pas à l’ancien écran provisoire « ROSE ! »).
+        if (turnos.length === 0) {
+          volverAlInicio();
+          return;
+        }
         accion.grupoMostrado = false;
         deshechas.push(accion);
         if (accion.tipo === 'cambio') sentido *= -1;
@@ -979,7 +988,7 @@
             : '<p class="round-end">Manche terminée !</p><small>Touchez pour commencer une nouvelle manche</small>'
           : estado === 'agotado'
             ? '<div class="big">⏱</div><p>Temps écoulé !</p><small>Un pois chiche de pénalité · Touchez pour une nouvelle manche</small>'
-            : '<div class="big">ROSE !</div><p>Touchez pour tirer la première carte</p><small>Sans lettres répétées · Il reste toujours une voyelle</small>';
+            : '<p>Touchez pour tirer la première carte</p><small>Sans lettres répétées · Il reste toujours une voyelle</small>';
         board.append(bienvenida);
       } else {
         const fragmento = document.createDocumentFragment();
@@ -1111,13 +1120,17 @@
     });
     rulesButton.addEventListener('click', () => { rulesPanel.hidden = false; });
     closeRulesButton.addEventListener('click', () => { rulesPanel.hidden = true; });
-    homeShortcutButton.addEventListener('click', event => {
-      event.stopPropagation();
+    function volverAlInicio() {
       relacherEcran();
       cancelarAviso();
       detenerReloj();
       landing.hidden = false;
+      rulesPanel.hidden = true;
       nuevaPartida();
+    }
+    homeShortcutButton.addEventListener('click', event => {
+      event.stopPropagation();
+      volverAlInicio();
     });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && !rulesPanel.hidden) { rulesPanel.hidden = true; return; }
