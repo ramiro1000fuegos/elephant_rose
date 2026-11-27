@@ -415,35 +415,6 @@
       <p class="landing-note">Un jeu de mots avec des lettres interdites · Sans connexion</p>
     </div>
   </section>
-  <section id="rules-panel" class="rules-panel" aria-labelledby="rules-title" hidden>
-    <div class="rules-content">
-      <div class="rules-header"><h2 id="rules-title">Règles du jeu</h2><button id="close-rules" type="button">Fermer ✕</button></div>
-      <h3>Le principe</h3>
-      <p>À tour de rôle, trouvez un mot en rapport avec le mot précédent, <strong>sans prononcer aucune des lettres affichées</strong> ! Les lettres s'accumulent et il devient de plus en plus difficile de répondre. Un mot déjà proposé ne peut pas être répété.</p>
-      <h3>Déroulement d'une manche</h3>
-      <p>La première personne touche l'écran et propose un mot. Chaque personne suivante touche l'écran pour découvrir une nouvelle lettre interdite et donne un mot associé au précédent. Certaines cartes ajoutent deux ou trois lettres à la fois.</p>
-      <p><strong>Sans limite de temps</strong>, un simple toucher passe à la carte suivante. Avec un chrono (15, 30 ou 45 secondes), un toucher arrête le chrono pour permettre la discussion ; le toucher suivant révèle la prochaine carte.</p>
-      <h3>Cartes spéciales</h3>
-      <ul>
-        <li><strong>X2 :</strong> une nouvelle lettre interdite apparaît, puis le symbole X2. Il faut proposer <strong>deux mots</strong> en lien avec le précédent. Les lettres deviennent rouges pour ce tour, la nouvelle étant plus vive.</li>
-        <li><strong>Inversion :</strong> on inverse le sens du jeu. La personne qui vient de jouer doit répondre.</li>
-        <li><strong>Choix :</strong> on désigne une autre personne pour répondre.</li>
-        <li><strong>Saut :</strong> on saute la personne qui aurait dû jouer ; la suivante répond.</li>
-      </ul>
-      <p>Ces trois dernières actions restent à l'écran jusqu'à ce que la personne désignée soit prête. Elle touche alors l'écran : <strong>une nouvelle lettre interdite apparaît</strong> et son tour commence.</p>
-      <h3>Les pois chiches</h3>
-      <p>Placez des pois chiches au centre de la table. Ils représentent des <strong>pénalités</strong> : en cas d'erreur ou de temps écoulé, la personne prend <strong>un pois chiche</strong> et la manche se termine. Appuyez sur <strong>Erreur</strong> pour la terminer manuellement.</p>
-      <ul>
-        <li><strong>1 à 5 lettres interdites :</strong> une réponse correcte ne change rien.</li>
-        <li><strong>6 ou 7 lettres interdites :</strong> une réponse correcte permet de <strong>rendre un pois chiche</strong> à la réserve (si on en possède au moins un). Le jeu continue.</li>
-        <li><strong>8 lettres interdites :</strong> une réponse correcte oblige <strong>toutes les autres personnes</strong> à prendre chacune un pois chiche. La manche se termine après la réponse.</li>
-      </ul>
-      <p>Une réponse incorrecte coûte toujours un pois chiche, quel que soit le nombre de lettres. Les pois chiches se comptent <strong>hors de l'application</strong>. On ne peut pas descendre sous zéro pénalité.</p>
-      <p>La partie s'arrête dès qu'une personne atteint le seuil convenu, par exemple <strong>3 ou 4 pois chiches</strong>. La ou les personnes qui en possèdent le moins gagnent.</p>
-      <h3>Commandes</h3>
-      <p><strong>↶ Retour</strong> annule le dernier geste, le bouton <strong>⛶</strong> active ou quitte le plein écran, et <strong>⌂</strong> revient à l'accueil.</p>
-    </div>
-  </section>
   <div id="power-overlay" class="power-overlay" role="status" aria-live="assertive" hidden>
     <div class="power-content">
       <span id="power-symbol" class="power-symbol">X2</span>
@@ -1120,7 +1091,10 @@
       nuevaPartida();
       sacarCarta();
     });
-    rulesButton.addEventListener('click', () => { rulesPanel.hidden = false; });
+    rulesButton.addEventListener('click', () => {
+       window.open('https://ramiro1000fuegos.github.io/projet52cartes/jeux/ole-guacamole.html', '_blank', 'noopener');
+    });
+    
     closeRulesButton.addEventListener('click', () => { rulesPanel.hidden = true; });
     function volverAlInicio() {
       relacherEcran();
