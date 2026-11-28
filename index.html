@@ -312,7 +312,7 @@
       text-align: center;
       background: radial-gradient(ellipse at 46% 18%, #793050 0%, #48152e 52%, #210818 100%);
     }
-    .landing[hidden], .rules-panel[hidden] { display: none; }
+    .landing[hidden] { display: none; }
     .landing-content {
       width: min(100%, 680px);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -352,21 +352,6 @@
       .landing-buttons button { padding: 8px 12px; font-size: 13px; }
       .landing-note { display: none; }
     }
-    .rules-panel {
-      position: fixed; inset: 0; z-index: 300;
-      overflow-y: auto;
-      background: #230b1b;
-      padding: clamp(14px, 4vw, 38px);
-      color: #fff1f5;
-    }
-    .rules-content { max-width: 670px; margin: 0 auto; font-size: 16px; line-height: 1.52; }
-    .rules-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    .rules-header h2 { font-size: clamp(23px, 6vw, 36px); margin: 0; }
-    .rules-content h3 { color: #ffb6cc; font-size: 18px; margin: 18px 0 6px; }
-    .rules-content p { margin: 6px 0 10px; }
-    .rules-content ul { margin: 6px 0 14px; padding-left: 24px; }
-    .rules-content li { margin: 4px 0; }
-    .rules-content strong { color: #ffe1e8; }
     @media (prefers-reduced-motion: reduce) {
       .tile.latest, .power-overlay, .power-content { animation: none; }
     }
@@ -464,10 +449,8 @@
     const message = document.getElementById('message');
     const errorButton = document.getElementById('error');
     const landing = document.getElementById('landing');
-    const rulesPanel = document.getElementById('rules-panel');
     const playButton = document.getElementById('play-button');
     const rulesButton = document.getElementById('rules-button');
-    const closeRulesButton = document.getElementById('close-rules');
     const homeShortcutButton = document.getElementById('home-shortcut');
     const undoButton = document.getElementById('undo');
     const fullscreenButton = document.getElementById('fullscreen');
@@ -1014,7 +997,7 @@
     // Se puede tocar CUALQUIER parte, incluidos el título y la barra del
     // reloj. Solo los botones y el selector quedan excluidos.
     app.addEventListener('click', event => {
-      if (pendingResume || event.target.closest('button, select, option, label') || !landing.hidden || !rulesPanel.hidden) return;
+      if (pendingResume || event.target.closest('button, select, option, label') || !landing.hidden) return;
       tocarPantalla();
     });
     resumeOverlay.addEventListener('click', event => {
@@ -1087,7 +1070,6 @@
       wakeEnabled = true;
       maintenirEcranAllume();
       landing.hidden = true;
-      rulesPanel.hidden = true;
       nuevaPartida();
       sacarCarta();
     });
@@ -1095,13 +1077,11 @@
        window.open('https://ramiro1000fuegos.github.io/projet52cartes/jeux/ole-guacamole.html', '_blank', 'noopener');
     });
     
-    closeRulesButton.addEventListener('click', () => { rulesPanel.hidden = true; });
     function volverAlInicio() {
       relacherEcran();
       cancelarAviso();
       detenerReloj();
       landing.hidden = false;
-      rulesPanel.hidden = true;
       nuevaPartida();
     }
     homeShortcutButton.addEventListener('click', event => {
@@ -1109,8 +1089,7 @@
       volverAlInicio();
     });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && !rulesPanel.hidden) { rulesPanel.hidden = true; return; }
-      if (!rulesPanel.hidden || !landing.hidden || pendingResume) return;
+      if (!landing.hidden || pendingResume) return;
       if (esperandoConfirmacion && (event.key === ' ' || event.key === 'Enter') && !event.repeat) {
         event.preventDefault();
         confirmarAviso();
